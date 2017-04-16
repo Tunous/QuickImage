@@ -98,6 +98,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ImageUploader.Ca
     override fun onSuccess(link: String) {
         Toast.makeText(this, "Upload finished: $link", Toast.LENGTH_SHORT).show()
         Log.d("ImageUpload", "Upload finished: $link")
+
+        copyTextToClipboard("Image link", link)
     }
 
     override fun onFailure() {
