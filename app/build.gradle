@@ -15,6 +15,8 @@ android {
 
         buildConfigField "String", "IMGUR_API_CLIENT_ID", project.IMGUR_API_CLIENT_ID
         buildConfigField "String", "IMGUR_API_CLIENT_SECRET", project.IMGUR_API_CLIENT_SECRET
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">QuickImage</string>
+
+    <string name="uploading_image">Uploading image…</string>
+    <string name="image_uploaded">Image uploaded</string>
+    <string name="image_upload_failed">Image upload failed</string>
+    <string name="share">Share</string>
+    <string name="upload">Upload</string>
 </resources>

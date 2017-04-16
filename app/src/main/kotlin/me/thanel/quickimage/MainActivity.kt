@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ImageUploader.Ca
 
         Picasso.with(this)
                 .load(imageUri)
-                .placeholder(R.mipmap.ic_launcher)
+                .placeholder(R.drawable.ic_image)
                 .fit()
                 .into(image)
     }

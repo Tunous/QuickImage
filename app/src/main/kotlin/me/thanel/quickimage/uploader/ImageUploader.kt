@@ -2,8 +2,7 @@ package me.thanel.quickimage.uploader
 
 import android.content.Context
 import android.net.Uri
-import me.thanel.quickimage.DocumentHelper
-import me.thanel.quickimage.isConnected
+import me.thanel.quickimage.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -73,6 +72,8 @@ abstract class ImageUploader<ResponseModel>(context: Context, private val callba
             return
         }
 
+        context.createUploadingNotification()
+
         val file = File(filePath)
 
         val retrofit = Retrofit.Builder()
@@ -110,10 +111,12 @@ abstract class ImageUploader<ResponseModel>(context: Context, private val callba
     }
 
     private fun notifySuccess(link: String) {
+        contextReference.get()?.createUploadedNotification(link)
         callback.onSuccess(link)
     }
 
     private fun notifyFailure() {
+        contextReference.get()?.createFailedUploadNotification()
         callback.onFailure()
     }
 }
