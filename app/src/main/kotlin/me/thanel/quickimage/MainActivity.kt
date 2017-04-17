@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.Toast
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
+import me.thanel.quickimage.extensions.copyTextToClipboard
 import me.thanel.quickimage.uploader.ImageUploader
 import me.thanel.quickimage.uploader.imgur.ImgurImageUploader
 

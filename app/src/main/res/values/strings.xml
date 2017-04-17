@@ -6,4 +6,5 @@
     <string name="image_upload_failed">Image upload failed</string>
     <string name="share">Share</string>
     <string name="upload">Upload</string>
+    <string name="create_link">Create link</string>
 </resources>
