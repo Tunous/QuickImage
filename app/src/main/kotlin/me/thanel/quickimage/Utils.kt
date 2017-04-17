@@ -33,6 +33,7 @@ fun Context.copyTextToClipboard(label: String, text: String) {
 
 fun Context.createUploadingNotification() =
         createNotification(R.drawable.ic_upload, R.string.uploading_image)
+                .setProgress(0, 0, true)
                 .display(this)
 
 fun Context.createFailedUploadNotification() =
