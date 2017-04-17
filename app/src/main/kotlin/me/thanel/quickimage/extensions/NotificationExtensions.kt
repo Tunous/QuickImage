@@ -15,7 +15,7 @@ import me.thanel.quickimage.R
  * Create a notification which displays uploading message with an indeterminate progress bar.
  */
 fun Context.createUploadingNotification() =
-        createNotification(R.drawable.ic_upload, R.string.uploading_image)
+        createNotification(R.drawable.ic_upload, R.string.image_upload_in_progress)
                 .setProgress(0, 0, true)
                 .display(this)
 
@@ -23,7 +23,7 @@ fun Context.createUploadingNotification() =
  * Create a notification which displays error message.
  */
 fun Context.createFailedUploadNotification() =
-        createNotification(R.drawable.ic_alert, R.string.image_upload_failed)
+        createNotification(R.drawable.ic_alert, R.string.image_upload_fail)
                 .display(this)
 
 /**
@@ -35,7 +35,7 @@ fun Context.createFailedUploadNotification() =
  * @param link The link to the image.
  */
 fun Context.createUploadedNotification(link: String) {
-    val builder = createNotification(R.drawable.ic_image, R.string.image_uploaded)
+    val builder = createNotification(R.drawable.ic_image, R.string.image_upload_success)
             .setContentText(link)
 
     val linkUri = Uri.parse(link)
