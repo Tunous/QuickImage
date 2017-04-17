@@ -1,45 +1,39 @@
-package me.thanel.quickimage
+package me.thanel.quickimage.extensions
 
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
 import android.net.Uri
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import android.support.v4.app.NotificationCompat
 import android.support.v4.content.ContextCompat
-import okhttp3.internal.connection.RouteException
+import me.thanel.quickimage.R
 
 /**
- * Tells whether the user is connected to interned.
+ * Create a notification which displays uploading message with an indeterminate progress bar.
  */
-val Context.isConnected: Boolean
-    get() = try {
-        val connectivityManager =
-                getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
-        connectivityManager?.activeNetworkInfo?.isConnected ?: false
-    } catch (ex: RouteException) {
-        false
-    }
-
-fun Context.copyTextToClipboard(label: String, text: String) {
-    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    clipboard.primaryClip = ClipData.newPlainText(label, text)
-}
-
 fun Context.createUploadingNotification() =
         createNotification(R.drawable.ic_upload, R.string.uploading_image)
                 .setProgress(0, 0, true)
                 .display(this)
 
+/**
+ * Create a notification which displays error message.
+ */
 fun Context.createFailedUploadNotification() =
         createNotification(R.drawable.ic_alert, R.string.image_upload_failed)
                 .display(this)
 
+/**
+ * Create a notification for a link to uploaded image.
+ *
+ * It displays the link for the image, opens it in browser when clicked on the notification
+ * and contains share button to share the link to other applications.
+ *
+ * @param link The link to the image.
+ */
 fun Context.createUploadedNotification(link: String) {
     val builder = createNotification(R.drawable.ic_image, R.string.image_uploaded)
             .setContentText(link)
