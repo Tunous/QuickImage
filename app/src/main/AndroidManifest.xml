@@ -23,6 +23,10 @@
         </activity>
 
         <activity
+            android:name=".ExternalStoragePermissionActivity"
+            android:theme="@style/Theme.Transparent" />
+
+        <activity
             android:name=".UploadActivity"
             android:label="@string/create_link"
             android:theme="@android:style/Theme.NoDisplay">

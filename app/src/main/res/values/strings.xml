@@ -6,7 +6,14 @@
     <string name="image_upload_success">Image successfully uploaded</string>
     <string name="image_upload_fail">Image upload failed</string>
 
+    <!-- Strings for permission information dialog. -->
+    <string name="permission_read_external_storage_title">Permission to read external storage</string>
+    <string name="permission_read_external_storage_message">This permission is required to access the images stored on your device. Without it, it won\'t be possible to upload images to the server.</string>
+
+    <!-- Generic action strings. -->
     <string name="share">Share</string>
     <string name="upload">Upload</string>
     <string name="create_link">Create link</string>
+    <string name="grant_permission">Grant permission</string>
+    <string name="cancel">Cancel</string>
 </resources>

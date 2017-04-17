@@ -1,9 +1,10 @@
 package me.thanel.quickimage
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import me.thanel.quickimage.uploader.ImageUploader
 import me.thanel.quickimage.uploader.imgur.ImgurImageUploader
 
@@ -14,7 +15,9 @@ import me.thanel.quickimage.uploader.imgur.ImgurImageUploader
  * the user's clipboard.
  * On failure a notification with error message is displayed instead.
  */
-class UploadActivity : AppCompatActivity(), ImageUploader.Callback {
+class UploadActivity : Activity(), ImageUploader.Callback {
+    private var imageUri: Uri? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,14 +35,26 @@ class UploadActivity : AppCompatActivity(), ImageUploader.Callback {
     }
 
     private fun handleSendImage(intent: Intent) {
-        val imageUri = intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM) ?: return
+        imageUri = intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM) ?: return
 
-        ImgurImageUploader(this, this).uploadImage(imageUri)
+        if (!ExternalStoragePermissionActivity.askForPermission(this, imageUri)) return
+
+        ImgurImageUploader(this, this).uploadImage(imageUri!!)
     }
 
     override fun onSuccess(link: String) {
     }
 
     override fun onFailure() {
+    }
+
+    companion object {
+        fun getUploadImageIntent(context: Context, imageUri: Uri): Intent {
+            return Intent(context, UploadActivity::class.java).apply {
+                action = Intent.ACTION_SEND
+                type = "image/*"
+                putExtra(Intent.EXTRA_STREAM, imageUri)
+            }
+        }
     }
 }
