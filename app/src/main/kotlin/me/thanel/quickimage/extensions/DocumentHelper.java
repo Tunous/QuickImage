@@ -1,4 +1,4 @@
-package me.thanel.quickimage;
+package me.thanel.quickimage.extensions;
 
 import android.content.ContentUris;
 import android.content.Context;

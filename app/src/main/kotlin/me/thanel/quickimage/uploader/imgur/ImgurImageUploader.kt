@@ -7,9 +7,6 @@ import me.thanel.quickimage.uploader.imgur.model.UploadedImage
 import okhttp3.RequestBody
 import retrofit2.Retrofit
 
-/**
- * Uploader which uploads images to the Imgur server.
- */
 class ImgurImageUploader(context: Context, callback: Callback) :
         ImageUploader<ImgurResponse<UploadedImage>>(context, callback) {
     override val baseUrl get() = ImgurAPI.BASE_URL

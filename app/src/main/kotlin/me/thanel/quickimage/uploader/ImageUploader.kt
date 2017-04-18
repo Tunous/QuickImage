@@ -2,7 +2,7 @@ package me.thanel.quickimage.uploader
 
 import android.content.Context
 import android.net.Uri
-import me.thanel.quickimage.DocumentHelper
+import me.thanel.quickimage.extensions.DocumentHelper
 import me.thanel.quickimage.extensions.createFailedUploadNotification
 import me.thanel.quickimage.extensions.createUploadedNotification
 import me.thanel.quickimage.extensions.createUploadingNotification
