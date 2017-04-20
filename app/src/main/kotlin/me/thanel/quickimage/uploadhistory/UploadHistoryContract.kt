@@ -1,6 +1,7 @@
 package me.thanel.quickimage.uploadhistory
 
 import android.content.Intent
+import me.thanel.quickimage.uploadhistory.model.UploadHistoryItem
 
 object UploadHistoryContract {
     interface View {
@@ -9,6 +10,6 @@ object UploadHistoryContract {
     }
 
     interface Presenter {
-        fun viewImage(link: String)
+        fun viewHistoryItem(item: UploadHistoryItem)
     }
 }

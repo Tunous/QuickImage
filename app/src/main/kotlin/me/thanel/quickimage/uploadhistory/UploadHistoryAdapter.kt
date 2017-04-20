@@ -11,12 +11,17 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.row_history.view.*
 import me.thanel.quickimage.R
 import me.thanel.quickimage.db.uploadhistory.UploadHistoryTable
+import me.thanel.quickimage.uploadhistory.model.UploadHistoryItem
 
 class UploadHistoryAdapter(
         private val presenter: UploadHistoryContract.View
 ) : RecyclerView.Adapter<UploadHistoryAdapter.ViewHolder>(), View.OnClickListener {
     private var cursor: Cursor? = null
     private var linkColumnIndex = 0
+
+    init {
+        setHasStableIds(true)
+    }
 
     fun swapCursor(newCursor: Cursor?) {
         if (newCursor == cursor) return
@@ -38,37 +43,41 @@ class UploadHistoryAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val cursor = cursor ?: return
-        if (!cursor.moveToPosition(position)) return
-
-        val link = cursor.getString(linkColumnIndex)
-        holder.itemView.tag = link
-        holder.linkView.text = link
-
-        holder.imageView.apply {
-            Picasso.with(context)
-                    .load(link)
-                    .placeholder(R.drawable.ic_image_black)
-                    .error(R.drawable.ic_alert_black)
-                    .into(this)
+        cursor?.let {
+            if (it.moveToPosition(position)) {
+                holder.bind(UploadHistoryItem.fromCursor(it))
+            }
         }
     }
 
-    override fun onViewRecycled(holder: ViewHolder) {
-        holder.imageView.apply {
-            Picasso.with(context)
-                    .cancelRequest(this)
-        }
-    }
+    override fun onViewRecycled(holder: ViewHolder) = holder.unbind()
 
     override fun getItemCount() = cursor?.count ?: 0
 
-    override fun onClick(v: View) {
-        presenter.onItemClick(v)
-    }
+    override fun onClick(v: View) = presenter.onItemClick(v)
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val linkView: TextView by lazy { itemView.link }
-        val imageView: ImageView by lazy { itemView.image }
+        private val linkView: TextView by lazy { itemView.link }
+        private val imageView: ImageView by lazy { itemView.image }
+
+        fun bind(item: UploadHistoryItem) {
+            itemView.tag = item
+            linkView.text = item.link
+
+            imageView.apply {
+                Picasso.with(context)
+                        .load(item.link)
+                        .placeholder(R.drawable.ic_image_black)
+                        .error(R.drawable.ic_alert_black)
+                        .into(this)
+            }
+        }
+
+        fun unbind() {
+            imageView.apply {
+                Picasso.with(context)
+                        .cancelRequest(this)
+            }
+        }
     }
 }

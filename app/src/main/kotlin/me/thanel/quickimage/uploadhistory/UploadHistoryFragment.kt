@@ -14,10 +14,11 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_upload_history.view.*
 import me.thanel.quickimage.R
 import me.thanel.quickimage.db.uploadhistory.UploadHistoryProvider
+import me.thanel.quickimage.uploadhistory.model.UploadHistoryItem
 
 class UploadHistoryFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>,
         UploadHistoryContract.View {
-    private val presenter by lazy { UploadHistoryPresenter(this) }
+    private val presenter: UploadHistoryContract.Presenter by lazy { UploadHistoryPresenter(this) }
     private val adapter by lazy { UploadHistoryAdapter(this) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +47,7 @@ class UploadHistoryFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>,
 
     override fun onItemClick(view: View) {
         if (view.id == R.id.rowHistory) {
-            presenter.viewImage(view.tag as String)
+            presenter.viewHistoryItem(view.tag as UploadHistoryItem)
         }
     }
 
