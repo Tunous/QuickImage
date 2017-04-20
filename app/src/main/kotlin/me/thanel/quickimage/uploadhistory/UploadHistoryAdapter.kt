@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.row_history.view.*
 import me.thanel.quickimage.R
 import me.thanel.quickimage.db.uploadhistory.UploadHistoryTable
 import me.thanel.quickimage.uploadhistory.model.UploadHistoryItem
+import java.util.*
 
 class UploadHistoryAdapter(
         private val presenter: UploadHistoryContract.View
@@ -39,14 +40,26 @@ class UploadHistoryAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context)
                 .inflate(R.layout.row_history, parent, false).apply {
-            setOnClickListener(this@UploadHistoryAdapter)
+            historyCard.setOnClickListener(this@UploadHistoryAdapter)
         })
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         cursor?.let {
             if (it.moveToPosition(position)) {
-                holder.bind(UploadHistoryItem.fromCursor(it))
+                val item = UploadHistoryItem.fromCursor(it)
+                val previousItem = if (it.position > 0 && it.moveToPrevious()) {
+                    UploadHistoryItem.fromCursor(it)
+                } else {
+                    null
+                }
+
+                it.moveToPosition(position)
+
+                val addBottomMargin = it.isLast || it.moveToNext() &&
+                        !UploadHistoryItem.fromCursor(it).wasUploadedAtSimilarTime(item)
+
+                holder.bind(item, previousItem, addBottomMargin)
             }
         }
     }
@@ -67,12 +80,34 @@ class UploadHistoryAdapter(
     override fun onClick(v: View) = presenter.onItemClick(v)
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val linkView: TextView by lazy { itemView.link }
-        private val imageView: ImageView by lazy { itemView.image }
+        private val linkView by lazy { itemView.findViewById(R.id.link) as TextView }
+        private val imageView by lazy { itemView.findViewById(R.id.image) as ImageView }
+        private val dateHeader by lazy { itemView.findViewById(R.id.dateHeader) as TextView }
+        private val historyCard by lazy { itemView.findViewById(R.id.historyCard) }
 
-        fun bind(item: UploadHistoryItem) {
-            itemView.tag = item
+        fun bind(item: UploadHistoryItem, previousItem: UploadHistoryItem?,
+                addBottomMargin: Boolean) {
+            historyCard.tag = item
             linkView.text = item.link
+
+            dateHeader.visibility = if (!item.wasUploadedAtSimilarTime(previousItem)) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
+            historyCard.apply {
+                layoutParams = (layoutParams as ViewGroup.MarginLayoutParams).apply {
+                    val bottomMargin = if (addBottomMargin) {
+                        context.resources.getDimensionPixelSize(R.dimen.card_section_bottom_margin)
+                    } else {
+                        1
+                    }
+                    setMargins(0, 0, 0, bottomMargin)
+                }
+            }
+
+            dateHeader.text = item.timestampString(Date().time)
 
             imageView.apply {
                 Picasso.with(context)

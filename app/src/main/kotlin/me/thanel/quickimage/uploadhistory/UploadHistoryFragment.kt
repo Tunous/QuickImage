@@ -5,8 +5,10 @@ import android.database.Cursor
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.LoaderManager
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +28,10 @@ class UploadHistoryFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>,
         return inflater.inflate(R.layout.fragment_upload_history, container, false).apply {
             uploadHistoryRecycler.adapter = adapter
             uploadHistoryRecycler.layoutManager = LinearLayoutManager(activity)
+            val decoration = DividerItemDecoration(uploadHistoryRecycler.context,
+                    DividerItemDecoration.VERTICAL)
+            decoration.setDrawable(ContextCompat.getDrawable(activity, R.drawable.divider))
+            uploadHistoryRecycler.addItemDecoration(decoration)
         }
     }
 
@@ -46,7 +52,7 @@ class UploadHistoryFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>,
     }
 
     override fun onItemClick(view: View) {
-        if (view.id == R.id.rowHistory) {
+        if (view.id == R.id.historyCard) {
             presenter.viewHistoryItem(view.tag as UploadHistoryItem)
         }
     }

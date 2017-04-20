@@ -53,9 +53,10 @@ class UploadHistoryProvider : ContentProvider() {
             }
         }
 
+        val sort = sortOrder ?: "${UploadHistoryTable.COLUMN_TIMESTAMP} desc"
+
         val db = dbHelper.readableDatabase
-        val cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null,
-                sortOrder)
+        val cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sort)
 
         cursor?.setNotificationUri(context.contentResolver, uri)
 

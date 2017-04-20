@@ -63,7 +63,7 @@ private fun Context.createNotification(@DrawableRes smallIcon: Int, @StringRes t
         NotificationCompat.Builder(this)
                 .setSmallIcon(smallIcon)
                 .setContentTitle(getString(title))
-                .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .setColor(ContextCompat.getColor(this, R.color.primary))
                 .setAutoCancel(true)
 
 private fun NotificationCompat.Builder.display(context: Context) {
