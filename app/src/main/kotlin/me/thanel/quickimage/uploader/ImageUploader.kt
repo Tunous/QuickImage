@@ -2,11 +2,8 @@ package me.thanel.quickimage.uploader
 
 import android.content.Context
 import android.net.Uri
-import me.thanel.quickimage.extensions.DocumentHelper
-import me.thanel.quickimage.extensions.createFailedUploadNotification
-import me.thanel.quickimage.extensions.createUploadedNotification
-import me.thanel.quickimage.extensions.createUploadingNotification
-import me.thanel.quickimage.extensions.isConnected
+import me.thanel.quickimage.db.uploadhistory.UploadHistoryTable
+import me.thanel.quickimage.extensions.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -92,7 +89,6 @@ abstract class ImageUploader<ResponseModel>(context: Context, private val callba
         retrofit.onExecute(image).enqueue(this)
     }
 
-
     final override fun onResponse(call: Call<ResponseModel>,
                                   response: Response<ResponseModel>) {
         val context = contextReference.get() ?: return
@@ -115,7 +111,11 @@ abstract class ImageUploader<ResponseModel>(context: Context, private val callba
     }
 
     private fun notifySuccess(link: String) {
-        contextReference.get()?.createUploadedNotification(link)
+        contextReference.get()?.let { context ->
+            context.createUploadedNotification(link)
+            UploadHistoryTable.saveLink(context, link)
+        }
+
         callback.onSuccess(link)
     }
 
