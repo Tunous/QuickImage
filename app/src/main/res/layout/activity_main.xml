@@ -11,7 +11,7 @@
         android:id="@+id/uploadHistoryFragment"
         android:name="me.thanel.quickimage.uploadhistory.UploadHistoryFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         tools:layout="@layout/fragment_upload_history" />
 
     <android.support.design.widget.FloatingActionButton

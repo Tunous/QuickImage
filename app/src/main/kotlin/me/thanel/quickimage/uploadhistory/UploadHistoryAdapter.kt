@@ -5,7 +5,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.row_history.view.*
 import me.thanel.quickimage.R
 import me.thanel.quickimage.db.uploadhistory.UploadHistoryTable
 
@@ -41,6 +44,21 @@ class UploadHistoryAdapter(
         val link = cursor.getString(linkColumnIndex)
         holder.itemView.tag = link
         holder.linkView.text = link
+
+        holder.imageView.apply {
+            Picasso.with(context)
+                    .load(link)
+                    .placeholder(R.drawable.ic_image_black)
+                    .error(R.drawable.ic_alert_black)
+                    .into(this)
+        }
+    }
+
+    override fun onViewRecycled(holder: ViewHolder) {
+        holder.imageView.apply {
+            Picasso.with(context)
+                    .cancelRequest(this)
+        }
     }
 
     override fun getItemCount() = cursor?.count ?: 0
@@ -50,6 +68,7 @@ class UploadHistoryAdapter(
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val linkView by lazy { itemView.findViewById(R.id.link) as TextView }
+        val linkView: TextView by lazy { itemView.link }
+        val imageView: ImageView by lazy { itemView.image }
     }
 }
