@@ -3,7 +3,6 @@ package me.thanel.quickimage.db.uploadhistory
 import android.content.ContentValues
 import android.content.Context
 import android.provider.BaseColumns
-import android.widget.Toast
 
 /**
  * Definition of table for history of uploaded images.
@@ -46,8 +45,6 @@ object UploadHistoryTable : BaseColumns {
             put(COLUMN_LINK, link)
         }
 
-        context.contentResolver.insert(UploadHistoryProvider.CONTENT_URI, cv)?.let {
-            Toast.makeText(context, "Link saved to history", Toast.LENGTH_SHORT).show()
-        }
+        context.contentResolver.insert(UploadHistoryProvider.CONTENT_URI, cv)
     }
 }
