@@ -19,9 +19,7 @@ class UploadHistoryProvider : ContentProvider() {
         return true
     }
 
-    override fun getType(uri: Uri): String? {
-        return null
-    }
+    override fun getType(uri: Uri) = null
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
         if (uriMatcher.match(uri) != MATCH_ALL) return null
@@ -75,7 +73,8 @@ class UploadHistoryProvider : ContentProvider() {
             }
             MATCH_ID -> {
                 if (selection != null && selectionArgs != null) {
-                    throw UnsupportedOperationException("Cannot update URI $uri with a where clause")
+                    throw UnsupportedOperationException(
+                            "Cannot update URI $uri with a where clause")
                 }
                 db.update(UploadHistoryTable.TABLE_NAME, values, "${BaseColumns._ID} = ?",
                         arrayOf(uri.lastPathSegment))
@@ -101,7 +100,8 @@ class UploadHistoryProvider : ContentProvider() {
             }
             MATCH_ID -> {
                 if (selection != null && selectionArgs != null) {
-                    throw UnsupportedOperationException("Cannot delete URI $uri with a where clause")
+                    throw UnsupportedOperationException(
+                            "Cannot delete URI $uri with a where clause")
                 }
                 db.delete(UploadHistoryTable.TABLE_NAME, "${BaseColumns._ID} = ?",
                         arrayOf(uri.lastPathSegment))
@@ -123,7 +123,7 @@ class UploadHistoryProvider : ContentProvider() {
 
         val CONTENT_URI: Uri = Uri.parse("content://me.thanel.quickimage/history")
 
-        val uriMatcher = UriMatcher(UriMatcher.NO_MATCH).apply {
+        private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH).apply {
             addURI("me.thanel.quickimage", "history", MATCH_ALL)
             addURI("me.thanel.quickimage", "history/#", MATCH_ID)
         }

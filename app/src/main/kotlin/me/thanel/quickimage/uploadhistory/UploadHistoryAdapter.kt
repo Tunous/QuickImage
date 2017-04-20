@@ -1,6 +1,7 @@
 package me.thanel.quickimage.uploadhistory
 
 import android.database.Cursor
+import android.provider.BaseColumns
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -53,6 +54,15 @@ class UploadHistoryAdapter(
     override fun onViewRecycled(holder: ViewHolder) = holder.unbind()
 
     override fun getItemCount() = cursor?.count ?: 0
+
+    override fun getItemId(position: Int): Long {
+        cursor?.let {
+            if (it.moveToPosition(position)) {
+                return it.getLong(it.getColumnIndex(BaseColumns._ID))
+            }
+        }
+        return super.getItemId(position)
+    }
 
     override fun onClick(v: View) = presenter.onItemClick(v)
 
