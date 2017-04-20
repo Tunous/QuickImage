@@ -54,12 +54,7 @@ class UploadHistoryAdapter(
                     null
                 }
 
-                it.moveToPosition(position)
-
-                val addBottomMargin = it.isLast || it.moveToNext() &&
-                        !UploadHistoryItem.fromCursor(it).wasUploadedAtSimilarTime(item)
-
-                holder.bind(item, previousItem, addBottomMargin)
+                holder.bind(item, previousItem)
             }
         }
     }
@@ -85,8 +80,7 @@ class UploadHistoryAdapter(
         private val dateHeader by lazy { itemView.findViewById(R.id.dateHeader) as TextView }
         private val historyCard by lazy { itemView.findViewById(R.id.historyCard) }
 
-        fun bind(item: UploadHistoryItem, previousItem: UploadHistoryItem?,
-                addBottomMargin: Boolean) {
+        fun bind(item: UploadHistoryItem, previousItem: UploadHistoryItem?) {
             historyCard.tag = item
             linkView.text = item.link
 
@@ -94,17 +88,6 @@ class UploadHistoryAdapter(
                 View.VISIBLE
             } else {
                 View.GONE
-            }
-
-            historyCard.apply {
-                layoutParams = (layoutParams as ViewGroup.MarginLayoutParams).apply {
-                    val bottomMargin = if (addBottomMargin) {
-                        context.resources.getDimensionPixelSize(R.dimen.card_section_bottom_margin)
-                    } else {
-                        1
-                    }
-                    setMargins(0, 0, 0, bottomMargin)
-                }
             }
 
             dateHeader.text = item.timestampString(Date().time)
