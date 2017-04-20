@@ -10,18 +10,34 @@ import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import kotlinx.android.synthetic.main.fragment_upload_history.view.*
 import me.thanel.quickimage.R
 import me.thanel.quickimage.db.uploadhistory.UploadHistoryProvider
+import me.thanel.quickimage.db.uploadhistory.UploadHistoryTable
 import me.thanel.quickimage.uploadhistory.model.UploadHistoryItem
 
 class UploadHistoryFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>,
         UploadHistoryContract.View {
     private val presenter: UploadHistoryContract.Presenter by lazy { UploadHistoryPresenter(this) }
     private val adapter by lazy { UploadHistoryAdapter(this) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.fragment_upload_history, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.clear_history) {
+            UploadHistoryTable.deleteAll(activity)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View {

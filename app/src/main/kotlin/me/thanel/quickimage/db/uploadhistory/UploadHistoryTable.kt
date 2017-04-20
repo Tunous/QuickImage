@@ -55,4 +55,11 @@ object UploadHistoryTable : BaseColumns {
 
         context.contentResolver.insert(UploadHistoryProvider.CONTENT_URI, cv)
     }
+
+    /**
+     * Delete the whole upload history.
+     */
+    fun deleteAll(context: Context) {
+        context.contentResolver.delete(UploadHistoryProvider.CONTENT_URI, null, null)
+    }
 }
