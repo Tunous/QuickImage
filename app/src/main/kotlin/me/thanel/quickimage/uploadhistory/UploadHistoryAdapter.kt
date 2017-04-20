@@ -16,10 +16,14 @@ import me.thanel.quickimage.uploadhistory.model.UploadHistoryItem
 import java.util.*
 
 class UploadHistoryAdapter(
-        private val presenter: UploadHistoryContract.View
+        private val callback: UploadHistoryAdapter.Callback
 ) : RecyclerView.Adapter<UploadHistoryAdapter.ViewHolder>(), View.OnClickListener {
     private var cursor: Cursor? = null
     private var linkColumnIndex = 0
+
+    interface Callback {
+        fun onItemClick(item: UploadHistoryItem)
+    }
 
     init {
         setHasStableIds(true)
@@ -72,7 +76,11 @@ class UploadHistoryAdapter(
         return super.getItemId(position)
     }
 
-    override fun onClick(v: View) = presenter.onItemClick(v)
+    override fun onClick(v: View) {
+        if (v.id == R.id.historyCard) {
+            callback.onItemClick(v.tag as UploadHistoryItem)
+        }
+    }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val linkView by lazy { itemView.findViewById(R.id.link) as TextView }

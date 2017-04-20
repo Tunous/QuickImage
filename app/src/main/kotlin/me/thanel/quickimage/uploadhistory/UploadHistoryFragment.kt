@@ -2,6 +2,7 @@ package me.thanel.quickimage.uploadhistory
 
 import android.content.Intent
 import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.LoaderManager
@@ -18,8 +19,7 @@ import me.thanel.quickimage.db.uploadhistory.UploadHistoryTable
 import me.thanel.quickimage.uploadhistory.model.UploadHistoryItem
 
 class UploadHistoryFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>,
-        UploadHistoryContract.View {
-    private val presenter: UploadHistoryContract.Presenter by lazy { UploadHistoryPresenter(this) }
+        UploadHistoryAdapter.Callback {
     private val adapter by lazy { UploadHistoryAdapter(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,13 +67,8 @@ class UploadHistoryFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>,
         adapter.swapCursor(null)
     }
 
-    override fun onItemClick(view: View) {
-        if (view.id == R.id.historyCard) {
-            presenter.viewHistoryItem(view.tag as UploadHistoryItem)
-        }
-    }
-
-    override fun onStartActivity(intent: Intent) {
+    override fun onItemClick(item: UploadHistoryItem) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
         startActivity(intent)
     }
 
