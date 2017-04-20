@@ -90,7 +90,7 @@ abstract class ImageUploader<ResponseModel>(context: Context, private val callba
     }
 
     final override fun onResponse(call: Call<ResponseModel>,
-                                  response: Response<ResponseModel>) {
+            response: Response<ResponseModel>) {
         val context = contextReference.get() ?: return
         if (!response.isSuccessful) {
             notifyFailure()

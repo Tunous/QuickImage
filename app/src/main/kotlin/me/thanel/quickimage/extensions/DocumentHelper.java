@@ -69,7 +69,7 @@ public class DocumentHelper {
     }
 
     private static String getDataColumn(Context context, Uri uri, String selection,
-            String[] selectionArgs) {
+                                        String[] selectionArgs) {
         Cursor cursor = null;
         final String column = "_data";
         final String[] projection = {column};

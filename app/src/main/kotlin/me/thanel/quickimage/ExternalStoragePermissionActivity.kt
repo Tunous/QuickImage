@@ -23,7 +23,7 @@ class ExternalStoragePermissionActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
-                                            grantResults: IntArray) {
+            grantResults: IntArray) {
         if (requestCode == REQUEST_READ_EXTERNAL_STORAGE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 val imageUri = intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM)
