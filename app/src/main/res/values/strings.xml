@@ -10,7 +10,14 @@
     <string name="permission_read_external_storage_title">Permission to read external storage</string>
     <string name="permission_read_external_storage_message">This permission is required to access the images stored on your device. Without it, it won\'t be possible to upload images to the server.</string>
 
-    <!-- Generic action strings. -->
+    <!-- Strings for settings screen. -->
+    <string name="settings">Settings</string>
+    <string name="success_notification">Success notification</string>
+    <string name="auto_copy">Automatic copy to clipboard</string>
+    <string name="success_notification_summary">Display notification with the link to the uploaded image after successful upload</string>
+    <string name="auto_copy_summary">After successfully uploading image to server the link will be automatically copied to clipboard</string>
+
+    <!-- Generic strings. -->
     <string name="share">Share</string>
     <string name="upload">Upload</string>
     <string name="create_link">Create link</string>
@@ -19,6 +26,5 @@
     <string name="preview_image">Preview image</string>
     <string name="clear_history">Clear history</string>
     <string name="clear_history_info">Whole upload history will be removed. There is no undo.</string>
-    <string name="settings">Settings</string>
     <string name="copied_link">Link copied to clipboard</string>
 </resources>

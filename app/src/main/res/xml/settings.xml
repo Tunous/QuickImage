@@ -5,14 +5,14 @@
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="pref_showSuccessNotification"
-        android:summary="Display notification with the link to the uploaded image after successful upload"
-        android:title="Success notification"/>
+        android:summary="@string/success_notification_summary"
+        android:title="@string/success_notification" />
 
     <CheckBoxPreference
         android:defaultValue="true"
-        android:key="pref_copyToClipboard"
         android:dependency="pref_showSuccessNotification"
-        android:summary="After successfully uploading image to server the link will be automatically copied to clipboard"
-        android:title="Automatic copy to clipboard"/>
+        android:key="pref_copyToClipboard"
+        android:summary="@string/auto_copy_summary"
+        android:title="@string/auto_copy" />
 
 </PreferenceScreen>
