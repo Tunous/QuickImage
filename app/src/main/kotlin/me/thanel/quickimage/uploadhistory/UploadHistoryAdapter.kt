@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.row_history.view.*
 import me.thanel.quickimage.R
 import me.thanel.quickimage.db.uploadhistory.UploadHistoryTable
 import me.thanel.quickimage.uploadhistory.model.UploadHistoryItem
@@ -23,6 +22,7 @@ class UploadHistoryAdapter(
 
     interface Callback {
         fun onItemClick(item: UploadHistoryItem)
+        fun onShareItem(item: UploadHistoryItem)
     }
 
     init {
@@ -43,9 +43,10 @@ class UploadHistoryAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context)
-                .inflate(R.layout.row_history, parent, false).apply {
+                .inflate(R.layout.row_history, parent, false)).apply {
             historyCard.setOnClickListener(this@UploadHistoryAdapter)
-        })
+            shareButton.setOnClickListener(this@UploadHistoryAdapter)
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -77,19 +78,27 @@ class UploadHistoryAdapter(
     }
 
     override fun onClick(v: View) {
-        if (v.id == R.id.historyCard) {
-            callback.onItemClick(v.tag as UploadHistoryItem)
+        when (v.id) {
+            R.id.historyCard -> {
+                callback.onItemClick(v.tag as UploadHistoryItem)
+            }
+            R.id.shareButton -> {
+                callback.onShareItem(v.tag as UploadHistoryItem)
+            }
         }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val linkView by lazy { itemView.findViewById(R.id.link) as TextView }
-        private val imageView by lazy { itemView.findViewById(R.id.image) as ImageView }
-        private val dateHeader by lazy { itemView.findViewById(R.id.dateHeader) as TextView }
-        private val historyCard by lazy { itemView.findViewById(R.id.historyCard) }
+        val linkView by lazy { itemView.findViewById(R.id.link) as TextView }
+        val imageView by lazy { itemView.findViewById(R.id.image) as ImageView }
+        val dateHeader by lazy { itemView.findViewById(R.id.dateHeader) as TextView }
+        val historyCard: View by lazy { itemView.findViewById(R.id.historyCard) }
+        val shareButton: View by lazy { itemView.findViewById(R.id.shareButton) }
 
         fun bind(item: UploadHistoryItem, previousItem: UploadHistoryItem?) {
             historyCard.tag = item
+            shareButton.tag = item
+
             linkView.text = item.link
 
             dateHeader.visibility = if (!item.wasUploadedAtSimilarTime(previousItem)) {

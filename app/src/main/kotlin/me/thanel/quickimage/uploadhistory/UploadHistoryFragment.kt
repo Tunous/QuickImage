@@ -6,11 +6,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.LoaderManager
-import android.support.v4.content.ContextCompat
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
 import android.support.v7.app.AlertDialog
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import kotlinx.android.synthetic.main.fragment_upload_history.*
@@ -18,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_upload_history.view.*
 import me.thanel.quickimage.R
 import me.thanel.quickimage.db.uploadhistory.UploadHistoryProvider
 import me.thanel.quickimage.db.uploadhistory.UploadHistoryTable
+import me.thanel.quickimage.extensions.createShareLinkIntent
 import me.thanel.quickimage.uploadhistory.model.UploadHistoryItem
 
 class UploadHistoryFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>,
@@ -53,10 +52,6 @@ class UploadHistoryFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>,
         return inflater.inflate(R.layout.fragment_upload_history, container, false).apply {
             uploadHistoryRecycler.adapter = adapter
             uploadHistoryRecycler.layoutManager = LinearLayoutManager(activity)
-            val decoration = DividerItemDecoration(uploadHistoryRecycler.context,
-                    DividerItemDecoration.VERTICAL)
-            decoration.setDrawable(ContextCompat.getDrawable(activity, R.drawable.divider))
-            uploadHistoryRecycler.addItemDecoration(decoration)
         }
     }
 
@@ -85,8 +80,11 @@ class UploadHistoryFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>,
     }
 
     override fun onItemClick(item: UploadHistoryItem) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
-        startActivity(intent)
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item.link)))
+    }
+
+    override fun onShareItem(item: UploadHistoryItem) {
+        startActivity(context.createShareLinkIntent(item.link))
     }
 
     companion object {

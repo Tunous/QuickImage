@@ -46,11 +46,7 @@ fun Context.createUploadedNotification(link: String) {
     builder.setContentIntent(resultPendingIntent)
 
     // Add a share button
-    val shareIntent = Intent(Intent.ACTION_SEND, linkUri).apply {
-        type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, link)
-        flags = Intent.FLAG_ACTIVITY_NEW_TASK
-    }
+    val shareIntent = createShareLinkIntent(link)
     val sharePendingIntent = PendingIntent.getActivity(this, 0, shareIntent, 0)
     val shareAction = NotificationCompat.Action(R.drawable.ic_share, getString(R.string.share),
             sharePendingIntent)

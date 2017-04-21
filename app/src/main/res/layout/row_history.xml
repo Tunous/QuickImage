@@ -7,45 +7,71 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <include layout="@layout/row_history_date_header"/>
+    <include layout="@layout/row_history_date_header" />
 
     <android.support.v7.widget.CardView
         android:id="@+id/historyCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?selectableItemBackground"
-        android:orientation="vertical"
-        app:cardCornerRadius="0dp">
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:cardCornerRadius="3dp"
+        app:cardUseCompatPadding="true">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:foreground="?selectableItemBackground">
 
             <ImageView
                 android:id="@+id/image"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="180dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="0dp"
                 android:contentDescription="@string/preview_image"
                 android:scaleType="centerCrop"
-                tools:src="@drawable/ic_image_black"/>
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_image_black" />
 
             <TextView
                 android:id="@+id/link"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                tools:text="http://example.com"/>
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/shareButton"
+                app:layout_constraintTop_toBottomOf="@+id/image"
+                app:layout_constraintVertical_bias="0.5"
+                tools:text="http://example.com" />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/shareButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/share"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image"
+                app:srcCompat="@drawable/ic_share" />
 
+        </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 
 </LinearLayout>
