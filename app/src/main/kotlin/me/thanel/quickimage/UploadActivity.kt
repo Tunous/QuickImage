@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import me.thanel.quickimage.uploader.ImageUploader
 import me.thanel.quickimage.uploader.imgur.ImgurImageUploader
 
 /**
@@ -15,7 +14,7 @@ import me.thanel.quickimage.uploader.imgur.ImgurImageUploader
  * the user's clipboard.
  * On failure a notification with error message is displayed instead.
  */
-class UploadActivity : Activity(), ImageUploader.Callback {
+class UploadActivity : Activity() {
     private var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,13 +38,7 @@ class UploadActivity : Activity(), ImageUploader.Callback {
 
         if (!ExternalStoragePermissionActivity.askForPermission(this, imageUri)) return
 
-        ImgurImageUploader(this, this).uploadImage(imageUri!!)
-    }
-
-    override fun onSuccess(link: String) {
-    }
-
-    override fun onFailure() {
+        ImgurImageUploader(this).uploadImage(imageUri!!)
     }
 
     companion object {

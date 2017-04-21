@@ -9,13 +9,11 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import me.thanel.quickimage.settings.SettingsActivity
-import me.thanel.quickimage.uploader.ImageUploader
 import me.thanel.quickimage.uploader.imgur.ImgurImageUploader
 
-class MainActivity : AppCompatActivity(), View.OnClickListener, ImageUploader.Callback {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -64,14 +62,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ImageUploader.Ca
     private fun uploadImage(imageUri: Uri) {
         if (!ExternalStoragePermissionActivity.askForPermission(this, imageUri)) return
 
-        ImgurImageUploader(this, this).uploadImage(imageUri)
-    }
-
-    override fun onSuccess(link: String) {
-    }
-
-    override fun onFailure() {
-        Toast.makeText(this, "Error uploading image", Toast.LENGTH_SHORT).show()
+        ImgurImageUploader(this).uploadImage(imageUri)
     }
 
     companion object {

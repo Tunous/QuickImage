@@ -21,8 +21,7 @@ import java.lang.ref.WeakReference
 /**
  * Base class for image uploaders.
  */
-abstract class ImageUploader<ResponseModel>(context: Context, private val callback: Callback) :
-        Callback<ResponseModel> {
+abstract class ImageUploader<ResponseModel>(context: Context) : Callback<ResponseModel> {
     private val contextReference = WeakReference(context)
 
     /**
@@ -41,23 +40,6 @@ abstract class ImageUploader<ResponseModel>(context: Context, private val callba
      * @return The link to the uploaded image, or null if upload failed.
      */
     protected abstract fun onResponse(context: Context, response: ResponseModel): String?
-
-    /**
-     * Callback to be executed on success or failure of image upload.
-     */
-    interface Callback {
-        /**
-         * Called when the image has been successfully uploaded.
-         *
-         * @param link the link to the uploaded image
-         */
-        fun onSuccess(link: String)
-
-        /**
-         * Called if an error happened when trying to upload the image.
-         */
-        fun onFailure()
-    }
 
     /**
      * Upload the image to the server.
@@ -134,12 +116,9 @@ abstract class ImageUploader<ResponseModel>(context: Context, private val callba
 
             UploadHistoryTable.saveLink(context, link)
         }
-
-        callback.onSuccess(link)
     }
 
     private fun notifyFailure() {
         contextReference.get()?.createFailedUploadNotification()
-        callback.onFailure()
     }
 }
