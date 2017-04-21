@@ -4,11 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
-import me.thanel.quickimage.extensions.copyTextToClipboard
+import me.thanel.quickimage.settings.SettingsActivity
 import me.thanel.quickimage.uploader.ImageUploader
 import me.thanel.quickimage.uploader.imgur.ImgurImageUploader
 
@@ -17,7 +20,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ImageUploader.Ca
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false)
+
         uploadButton.setOnClickListener(this)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.settings) {
+            startActivity(Intent(this, SettingsActivity::class.java))
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -50,7 +68,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, ImageUploader.Ca
     }
 
     override fun onSuccess(link: String) {
-        copyTextToClipboard("Image link", link)
     }
 
     override fun onFailure() {

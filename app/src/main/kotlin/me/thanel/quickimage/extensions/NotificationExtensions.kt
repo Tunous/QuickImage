@@ -59,6 +59,13 @@ fun Context.createUploadedNotification(link: String) {
     builder.display(this)
 }
 
+fun Context.hideUploadNotification() {
+    val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    val id = getString(R.string.app_name).hashCode()
+    notificationManager.cancel(id)
+}
+
 private fun Context.createNotification(@DrawableRes smallIcon: Int, @StringRes title: Int) =
         NotificationCompat.Builder(this)
                 .setSmallIcon(smallIcon)

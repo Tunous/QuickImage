@@ -2,8 +2,12 @@ package me.thanel.quickimage.uploader
 
 import android.content.Context
 import android.net.Uri
+import android.preference.PreferenceManager
+import android.widget.Toast
+import me.thanel.quickimage.R
 import me.thanel.quickimage.db.uploadhistory.UploadHistoryTable
 import me.thanel.quickimage.extensions.*
+import me.thanel.quickimage.settings.SettingsFragment
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -112,7 +116,22 @@ abstract class ImageUploader<ResponseModel>(context: Context, private val callba
 
     private fun notifySuccess(link: String) {
         contextReference.get()?.let { context ->
-            context.createUploadedNotification(link)
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            val showNotification =
+                    preferences.getBoolean(SettingsFragment.KEY_PREF_SUCCESS_NOTIFICATION, true)
+            if (showNotification) {
+                context.createUploadedNotification(link)
+            } else {
+                context.hideUploadNotification()
+            }
+
+            if (preferences.getBoolean(SettingsFragment.KEY_PREF_AUTOMATIC_COPY, true)) {
+                context.copyTextToClipboard("Image link", link)
+                if (!showNotification) {
+                    Toast.makeText(context, R.string.copied_link, Toast.LENGTH_SHORT).show()
+                }
+            }
+
             UploadHistoryTable.saveLink(context, link)
         }
 

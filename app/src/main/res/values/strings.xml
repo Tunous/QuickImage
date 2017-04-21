@@ -19,4 +19,6 @@
     <string name="preview_image">Preview image</string>
     <string name="clear_history">Clear history</string>
     <string name="clear_history_info">Whole upload history will be removed. There is no undo.</string>
+    <string name="settings">Settings</string>
+    <string name="copied_link">Link copied to clipboard</string>
 </resources>
