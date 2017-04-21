@@ -17,4 +17,6 @@
     <string name="grant_permission">Grant permission</string>
     <string name="cancel">Cancel</string>
     <string name="preview_image">Preview image</string>
+    <string name="clear_history">Clear history</string>
+    <string name="clear_history_info">Whole upload history will be removed. There is no undo.</string>
 </resources>

@@ -9,6 +9,7 @@ import android.support.v4.app.LoaderManager
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
@@ -33,7 +34,14 @@ class UploadHistoryFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>,
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.clear_history) {
-            UploadHistoryTable.deleteAll(activity)
+            AlertDialog.Builder(activity)
+                    .setTitle(R.string.clear_history)
+                    .setMessage(R.string.clear_history_info)
+                    .setPositiveButton(R.string.clear_history, { _, _ ->
+                        UploadHistoryTable.deleteAll(activity)
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
             return true
         }
         return super.onOptionsItemSelected(item)
