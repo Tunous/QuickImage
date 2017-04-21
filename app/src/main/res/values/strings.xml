@@ -27,4 +27,5 @@
     <string name="clear_history">Clear history</string>
     <string name="clear_history_info">Whole upload history will be removed. There is no undo.</string>
     <string name="copied_link">Link copied to clipboard</string>
+    <string name="no_uploaded_images">No uploaded images</string>
 </resources>

@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
+import kotlinx.android.synthetic.main.fragment_upload_history.*
 import kotlinx.android.synthetic.main.fragment_upload_history.view.*
 import me.thanel.quickimage.R
 import me.thanel.quickimage.db.uploadhistory.UploadHistoryProvider
@@ -68,6 +69,14 @@ class UploadHistoryFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor>,
             CursorLoader(activity, UploadHistoryProvider.CONTENT_URI, null, null, null, null)
 
     override fun onLoadFinished(loader: Loader<Cursor>?, data: Cursor?) {
+        if (data == null || data.count == 0) {
+            uploadHistoryRecycler.visibility = View.GONE
+            emptyView.visibility = View.VISIBLE
+        } else {
+            uploadHistoryRecycler.visibility = View.VISIBLE
+            emptyView.visibility = View.GONE
+        }
+
         adapter.swapCursor(data)
     }
 
