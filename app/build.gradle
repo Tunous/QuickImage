@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
         applicationId "me.thanel.quickimage"
@@ -13,8 +13,8 @@ android {
         versionCode 1
         versionName "0.1.0"
 
-        buildConfigField "String", "IMGUR_API_CLIENT_ID", project.IMGUR_API_CLIENT_ID
-        buildConfigField "String", "IMGUR_API_CLIENT_SECRET", project.IMGUR_API_CLIENT_SECRET
+        buildConfigField "String", "IMGUR_API_CLIENT_ID", IMGUR_API_CLIENT_ID
+        buildConfigField "String", "IMGUR_API_CLIENT_SECRET", IMGUR_API_CLIENT_SECRET
 
         vectorDrawables.useSupportLibrary = true
     }
