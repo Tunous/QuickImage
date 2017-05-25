@@ -109,9 +109,7 @@ abstract class ImageUploader<ResponseModel>(context: Context) : Callback<Respons
 
             if (preferences.getBoolean(SettingsFragment.KEY_PREF_AUTOMATIC_COPY, true)) {
                 context.copyTextToClipboard("Image link", link)
-                if (!showNotification) {
-                    Toast.makeText(context, R.string.copied_link, Toast.LENGTH_SHORT).show()
-                }
+                Toast.makeText(context, R.string.copied_link, Toast.LENGTH_SHORT).show()
             }
 
             UploadHistoryTable.saveLink(context, link)
