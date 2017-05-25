@@ -4,6 +4,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
@@ -14,17 +15,17 @@ import me.thanel.quickimage.R
 /**
  * Create a notification which displays uploading message with an indeterminate progress bar.
  */
-fun Context.createUploadingNotification() =
+fun Context.createUploadingNotification(id: Int) =
         createNotification(R.drawable.ic_upload, R.string.image_upload_in_progress)
                 .setProgress(0, 0, true)
-                .display(this)
+                .display(this, id)
 
 /**
  * Create a notification which displays error message.
  */
-fun Context.createFailedUploadNotification() =
+fun Context.createFailedUploadNotification(id: Int) =
         createNotification(R.drawable.ic_alert, R.string.image_upload_fail)
-                .display(this)
+                .display(this, id)
 
 /**
  * Create a notification for a link to uploaded image.
@@ -34,7 +35,7 @@ fun Context.createFailedUploadNotification() =
  *
  * @param link The link to the image.
  */
-fun Context.createUploadedNotification(link: String) {
+fun Context.createUploadedNotification(id: Int, link: String, image: Bitmap?) {
     val builder = createNotification(R.drawable.ic_image, R.string.image_upload_success)
             .setContentText(link)
 
@@ -52,13 +53,15 @@ fun Context.createUploadedNotification(link: String) {
             sharePendingIntent)
     builder.addAction(shareAction)
 
-    builder.display(this)
+    // Add an image
+    image?.let { builder.setLargeIcon(it) }
+
+    builder.display(this, id)
 }
 
-fun Context.hideUploadNotification() {
+fun Context.hideUploadNotification(id: Int) {
     val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-    val id = getString(R.string.app_name).hashCode()
     notificationManager.cancel(id)
 }
 
@@ -69,9 +72,8 @@ private fun Context.createNotification(@DrawableRes smallIcon: Int, @StringRes t
                 .setColor(ContextCompat.getColor(this, R.color.primary))
                 .setAutoCancel(true)
 
-private fun NotificationCompat.Builder.display(context: Context) {
+private fun NotificationCompat.Builder.display(context: Context, id: Int) {
     val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-    val id = context.getString(R.string.app_name).hashCode()
     notificationManager.notify(id, build())
 }

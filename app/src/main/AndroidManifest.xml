@@ -29,7 +29,7 @@
 
         <activity
             android:name=".UploadActivity"
-            android:label="@string/create_link"
+            android:label="@string/share_intent_title"
             android:theme="@android:style/Theme.NoDisplay">
 
             <intent-filter>

@@ -1,6 +1,8 @@
 package me.thanel.quickimage.uploader
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.preference.PreferenceManager
 import android.widget.Toast
@@ -11,8 +13,6 @@ import me.thanel.quickimage.settings.SettingsFragment
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
@@ -21,8 +21,10 @@ import java.lang.ref.WeakReference
 /**
  * Base class for image uploaders.
  */
-abstract class ImageUploader<ResponseModel>(context: Context) : Callback<ResponseModel> {
+abstract class ImageUploader<ResponseModel>(context: Context) {
     private val contextReference = WeakReference(context)
+
+    private var notificationId = 0
 
     /**
      * The API base URL.
@@ -39,7 +41,7 @@ abstract class ImageUploader<ResponseModel>(context: Context) : Callback<Respons
      *
      * @return The link to the uploaded image, or null if upload failed.
      */
-    protected abstract fun onResponse(context: Context, response: ResponseModel): String?
+    abstract fun onResponse(response: ResponseModel): String?
 
     /**
      * Upload the image to the server.
@@ -47,64 +49,50 @@ abstract class ImageUploader<ResponseModel>(context: Context) : Callback<Respons
      * @param fileUri the uri of the image file to upload.
      */
     fun uploadImage(fileUri: Uri) {
+        val id = notificationId
+        notificationId += 1
+
         val context = contextReference.get()
         if (context == null || !context.isConnected) {
-            notifyFailure()
+            notifyFailure(id)
             return
         }
 
         val filePath = DocumentHelper.getPath(context, fileUri)
         if (filePath.isNullOrEmpty()) {
-            notifyFailure()
+            notifyFailure(id)
             return
         }
 
-        context.createUploadingNotification()
+        context.createUploadingNotification(id)
 
         val file = File(filePath)
-
         val retrofit = Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
-
         val image = RequestBody.create(
                 MediaType.parse(context.contentResolver.getType(fileUri)),
                 file)
 
-        retrofit.onExecute(image).enqueue(this)
+        val call = UploadCall(this, id, file.absolutePath)
+        retrofit.onExecute(image).enqueue(call)
     }
 
-    final override fun onResponse(call: Call<ResponseModel>,
-            response: Response<ResponseModel>) {
-        val context = contextReference.get() ?: return
-        if (!response.isSuccessful) {
-            notifyFailure()
-            return
-        }
-
-        val link = onResponse(context, response.body())
-        if (link != null) {
-            notifySuccess(link)
-        } else {
-            notifyFailure()
-        }
-    }
-
-    final override fun onFailure(call: Call<ResponseModel>, t: Throwable) {
-        t.printStackTrace()
-        notifyFailure()
-    }
-
-    private fun notifySuccess(link: String) {
+    fun notifySuccess(id: Int, link: String, filePath: String) {
         contextReference.get()?.let { context ->
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
             val showNotification =
                     preferences.getBoolean(SettingsFragment.KEY_PREF_SUCCESS_NOTIFICATION, true)
             if (showNotification) {
-                context.createUploadedNotification(link)
+                val options = BitmapFactory.Options().apply {
+                    inPreferredConfig = Bitmap.Config.ARGB_8888
+                }
+                val image = BitmapFactory.decodeFile(filePath, options)
+
+                context.createUploadedNotification(id, link, image)
             } else {
-                context.hideUploadNotification()
+                context.hideUploadNotification(id)
             }
 
             if (preferences.getBoolean(SettingsFragment.KEY_PREF_AUTOMATIC_COPY, true)) {
@@ -116,7 +104,7 @@ abstract class ImageUploader<ResponseModel>(context: Context) : Callback<Respons
         }
     }
 
-    private fun notifyFailure() {
-        contextReference.get()?.createFailedUploadNotification()
+    fun notifyFailure(id: Int) {
+        contextReference.get()?.createFailedUploadNotification(id)
     }
 }

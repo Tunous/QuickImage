@@ -14,6 +14,6 @@ class ImgurImageUploader(context: Context) : ImageUploader<ImgurResponse<Uploade
             create(ImgurAPI::class.java)
                     .uploadImage(ImgurAPI.CLIENT_ID_HEADER, image)
 
-    override fun onResponse(context: Context, response: ImgurResponse<UploadedImage>) =
+    override fun onResponse(response: ImgurResponse<UploadedImage>) =
             if (response.success) response.data.link else null
 }
