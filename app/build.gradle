@@ -14,7 +14,6 @@ android {
         versionName "0.1.0"
 
         buildConfigField "String", "IMGUR_API_CLIENT_ID", IMGUR_API_CLIENT_ID
-        buildConfigField "String", "IMGUR_API_CLIENT_SECRET", IMGUR_API_CLIENT_SECRET
 
         vectorDrawables.useSupportLibrary = true
     }
